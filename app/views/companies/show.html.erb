@@ -6,13 +6,25 @@
     </div>
     <div class="col text-right">
       <%= link_to "Edit", edit_company_path %>
+
+<!--      To destroy the specific record from the DB-->
+      <%= link_to 'Destroy', @company, method: :delete, data: { confirm: 'Are you sure?' } %>
     </div>
   </div>
   <div class="bg-success">
     <div class="container p-5 text-white">
       <h1><%= @company.name %></h1>
-      <h3>City, State</h3>
-      <pre>☝️ This is what needs to be udpated. Examples: Atlanta, GA or Nashvile, TN</pre>
+
+<!--  from ZipCodes module call the identify method with 5 Digit US postal code to get the zipcode details-->
+      <% zip_code_info = ZipCodes.identify(@company.zip_code) %>
+
+<!--      if stored data of zip code invalid or data not fount in the ZipCodes gem the zip_code_info will be nil-->
+      <% if zip_code_info.present? %>
+        <h3><%= zip_code_info[:city] %>, <%= zip_code_info[:state_name] %></h3>
+      <% else %>
+        <h3> Please update the ZipCode of this company record with 5 Digit US postal code</h3>
+      <% end %>
+<!--      <pre>☝️ This is what needs to be update. Examples: Atlanta, GA or Nashvile, TN</pre>-->
     </div>
   </div>
   <% if @company.description.present? %>

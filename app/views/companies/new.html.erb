@@ -1,5 +1,10 @@
 <div class="container py-5">
   <h3>New Company</h3>
   <%= link_to "< Companies", companies_path %>
+  <!--  To display the email domain validation error -->
+  <% if @company.errors.present?%>
+    <h4 style="color: #B00100"><%= @company.errors['email'] %></h4>
+  <% end%>
   <%= render "form" %>
+
 </div>
