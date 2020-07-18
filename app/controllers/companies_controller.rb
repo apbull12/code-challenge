@@ -35,7 +35,7 @@ class CompaniesController < ApplicationController
   def destroy
     @company.destroy
     respond_to do |format|
-      format.html { redirect_to companies_path, notice: "#{@company.name} Company was successfully destroyed." }
+      format.html { redirect_to companies_path, notice: "#{@company.name} Company is successfully destroyed." }
       format.json { head :no_content }
     end
   end
