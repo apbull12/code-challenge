@@ -14,13 +14,9 @@
   <div class="bg-success">
     <div class="container p-5 text-white">
       <h1><%= @company.name %></h1>
-
-<!--  from ZipCodes module call the identify method with 5 Digit US postal code to get the zipcode details-->
-      <% zip_code_info = ZipCodes.identify(@company.zip_code) %>
-
 <!--      if stored data of zip code invalid or data not fount in the ZipCodes gem the zip_code_info will be nil-->
-      <% if zip_code_info.present? %>
-        <h3><%= zip_code_info[:city] %>, <%= zip_code_info[:state_name] %></h3>
+      <% if @company.city.present? && @company.state.present?%>
+        <h3><%= @company.city %>, <%= @company.state %></h3>
       <% else %>
         <h3> Please update the ZipCode of this company record with 5 Digit US postal code</h3>
       <% end %>

@@ -2,8 +2,8 @@
   <h3>Edit Company</h3>
   <%= link_to "< Company", company_path(@company) %>
   <!--  To display the email domain validation error -->
-  <% if @company.errors.present?%>
-    <h4 style="color: #B00100"><%= @company.errors['email'] %></h4>
-  <% end%>
+  <% if @company.errors.present? %>
+    <p style="color: #B00100"><%= @company.errors['email'].last %></p>
+  <% end %>
   <%= render "form" %>
 </div>

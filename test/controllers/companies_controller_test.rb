@@ -16,13 +16,14 @@ class CompaniesControllerTest < ApplicationSystemTestCase
   end
 
   test "Show" do
+    @company.save
+    @company.reload
     visit company_path(@company)
 
-    zip_info = ZipCodes.identify(@company.zip_code)
     assert_text @company.name
     assert_text @company.phone
     assert_text @company.email
-    assert_text "#{zip_info[:city]}, #{zip_info[:state_name]}"
+    assert_text "#{@company.city}, #{@company.state}"
   end
 
   test "In Show if zipcode is invalid" do
@@ -36,8 +37,7 @@ class CompaniesControllerTest < ApplicationSystemTestCase
 
     visit company_path(@company)
 
-    zip_info = ZipCodes.identify(@company.zip_code)
-    assert_text "Please update the ZipCode of this company record with 5 Digit US postal code" if zip_info.nil?
+    assert_text "Please update the ZipCode of this company record with 5 Digit US postal code" if @company.city.nil? && @company.state.nil?
   end
 
   test "Destroy" do
@@ -59,8 +59,11 @@ class CompaniesControllerTest < ApplicationSystemTestCase
     assert_text "Changes Saved"
 
     @company.reload
+    zipcode_info = ZipCodes.identify(@company.zip_code)
     assert_equal "Updated Test Company", @company.name
     assert_equal "93009", @company.zip_code
+    assert_equal zipcode_info[:city], @company.city
+    assert_equal zipcode_info[:state_name], @company.state
   end
 
   test "Create" do
@@ -77,8 +80,11 @@ class CompaniesControllerTest < ApplicationSystemTestCase
     assert_text "Saved"
 
     last_company = Company.last
+    zipcode_info = ZipCodes.identify(last_company.zip_code)
     assert_equal "New Test Company", last_company.name
     assert_equal "28173", last_company.zip_code
+    assert_equal zipcode_info[:city], last_company.city
+    assert_equal zipcode_info[:state_name], last_company.state
   end
 
   test "Validate email domain while creating the record" do
